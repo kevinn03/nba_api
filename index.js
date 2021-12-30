@@ -74,13 +74,16 @@ websites.forEach((website) => {
   });
 });
 
-app.get('/news', (request, response) => {
+const limitBlogs = (request, articles) => {
   const retArticles = [...articles];
   if (request.query && request.query.limit) {
-    response.json(retArticles.slice(0, request.query.limit));
+    return retArticles.slice(0, request.query.limit);
   }
+  return retArticles;
+};
 
-  response.json(retArticles);
+app.get('/news', (request, response) => {
+  response.json(limitBlogs(request, articles));
 });
 
 app.get('/news/:site', (request, response) => {
@@ -91,11 +94,7 @@ app.get('/news/:site', (request, response) => {
     (ele) => ele.source.toLowerCase() === site.toLowerCase()
   );
 
-  if (request.query && request.query.limit) {
-    response.json(retArticles.slice(0, request.query.limit));
-  }
-
-  response.json(filterArr);
+  response.json(limitBlogs(request, filterArr));
 });
 
 app.get('/news/player/:id', (request, response) => {
@@ -106,11 +105,7 @@ app.get('/news/player/:id', (request, response) => {
     (ele) => ele.title.includes(id) || ele.url.includes(id)
   );
 
-  if (request.query && request.query.limit) {
-    response.json(retArticles.slice(0, request.query.limit));
-  }
-
-  response.json(filterArr);
+  response.json(limitBlogs(request, filterArr));
 });
 
 app.get('/news/team/:id', (request, response) => {
@@ -121,11 +116,7 @@ app.get('/news/team/:id', (request, response) => {
     (ele) => ele.title.toLowerCase().includes(id) || ele.url.includes(id)
   );
 
-  if (request.query && request.query.limit) {
-    response.json(retArticles.slice(0, request.query.limit));
-  }
-
-  response.json(filterArr);
+  response.json(limitBlogs(request, filterArr));
 });
 
 app.get('/test', async (request, response) => {
