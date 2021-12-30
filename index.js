@@ -86,6 +86,9 @@ loadArticle();
 const limitBlogs = (request, articles) => {
   const retArticles = [...articles];
   if (request.query && request.query.limit) {
+    if (request.query.limit < 0) {
+      request.query.limit = 0;
+    }
     return retArticles.slice(0, request.query.limit);
   }
   return retArticles;
@@ -133,4 +136,9 @@ app.get('/news/team/:id', (request, response) => {
 
 // app.get('/test', async (request, response) => {});
 
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+};
+
+app.use(unknownEndpoint);
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
