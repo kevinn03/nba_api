@@ -16,7 +16,7 @@ const websites = [
     name: 'espn',
     address: 'https://www.espn.com/nba/',
     base: 'https://www.espn.com',
-    selector: '.headlineStack__list li a',
+    selector: '.headlineStack__header + section > ul > li > a',
   },
   {
     name: 'bleacherreport',
@@ -76,6 +76,9 @@ websites.forEach((website) => {
 
 app.get('/news', (request, response) => {
   const retArticles = [...articles];
+  if (request.query && request.query.limit) {
+    response.json(retArticles.slice(0, request.query.limit));
+  }
 
   response.json(retArticles);
 });
@@ -88,10 +91,14 @@ app.get('/news/:site', (request, response) => {
     (ele) => ele.source.toLowerCase() === site.toLowerCase()
   );
 
+  if (request.query && request.query.limit) {
+    response.json(retArticles.slice(0, request.query.limit));
+  }
+
   response.json(filterArr);
 });
 
-app.get('/news/player-team/:id', (request, response) => {
+app.get('/news/player/:id', (request, response) => {
   const retArticles = [...articles];
   const id = request.params.id;
 
@@ -99,19 +106,38 @@ app.get('/news/player-team/:id', (request, response) => {
     (ele) => ele.title.includes(id) || ele.url.includes(id)
   );
 
+  if (request.query && request.query.limit) {
+    response.json(retArticles.slice(0, request.query.limit));
+  }
+
+  response.json(filterArr);
+});
+
+app.get('/news/team/:id', (request, response) => {
+  const retArticles = [...articles];
+  const id = request.params.id;
+
+  const filterArr = retArticles.filter(
+    (ele) => ele.title.toLowerCase().includes(id) || ele.url.includes(id)
+  );
+
+  if (request.query && request.query.limit) {
+    response.json(retArticles.slice(0, request.query.limit));
+  }
+
   response.json(filterArr);
 });
 
 app.get('/test', async (request, response) => {
   const arr = [];
-  const res = await axios.get('https://sports.yahoo.com/nba/?guccounter=1');
+  const res = await axios.get('https://www.espn.com/nba/');
   const html = res.data;
   const $ = cheerio.load(html);
 
-  $('.js-content-viewer', html).each(function () {
+  $('.headlineStack__header + section > ul > li > a', html).each(function () {
     // console.log($(this));
     console.log($(this).text());
-    console.log($(this).attr('href'));
+    // console.log($(this).attr('href'));
     // const resUrl = $(this).attr('href');
     // const url = website.base + resUrl;
     // let title = '';
@@ -122,7 +148,10 @@ app.get('/test', async (request, response) => {
     // }
     // arr.push({ title, url, source: website.name });
   });
-
+  if (request.query && request.query.limit) {
+    const query = request.query;
+    response.json(arr.slice(0, 2));
+  }
   response.json(arr);
 });
 
