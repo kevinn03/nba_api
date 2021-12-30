@@ -43,14 +43,19 @@ const getTitle = (strTitle, digit) => {
   return retTitle[digit];
 };
 
-app.get('/', (request, response) => {
-  response.json('NBA');
-});
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
 
-const articles = [];
+const originalArticles = [];
+let articles = [];
 
-websites.forEach((website) => {
-  axios.get(website.address).then((res) => {
+const loadArticle = async () => {
+  for (const website of websites) {
+    const res = await axios.get(website.address);
     const html = res.data;
     const $ = cheerio.load(html);
 
@@ -69,10 +74,14 @@ websites.forEach((website) => {
       } else if (website.name === 'yahoo') {
         title = $(this).text();
       }
-      articles.push({ title, url, source: website.name });
+      originalArticles.push({ title, url, source: website.name });
     });
-  });
-});
+  }
+  articles = [...originalArticles];
+  shuffleArray(articles);
+};
+
+loadArticle();
 
 const limitBlogs = (request, articles) => {
   const retArticles = [...articles];
@@ -81,6 +90,9 @@ const limitBlogs = (request, articles) => {
   }
   return retArticles;
 };
+app.get('/', (request, response) => {
+  response.json('NBA');
+});
 
 app.get('/news', (request, response) => {
   response.json(limitBlogs(request, articles));
@@ -120,30 +132,36 @@ app.get('/news/team/:id', (request, response) => {
 });
 
 app.get('/test', async (request, response) => {
-  const arr = [];
-  const res = await axios.get('https://www.espn.com/nba/');
-  const html = res.data;
-  const $ = cheerio.load(html);
-
-  $('.headlineStack__header + section > ul > li > a', html).each(function () {
-    // console.log($(this));
-    console.log($(this).text());
-    // console.log($(this).attr('href'));
-    // const resUrl = $(this).attr('href');
-    // const url = website.base + resUrl;
-    // let title = '';
-    // if (website.name === 'nba') {
-    //   title = getTitle(resUrl);
-    // } else if (website.name === 'espn') {
-    //   title = $(this).text();
-    // }
-    // arr.push({ title, url, source: website.name });
-  });
-  if (request.query && request.query.limit) {
-    const query = request.query;
-    response.json(arr.slice(0, 2));
-  }
-  response.json(arr);
+  //   console.log(originalArticles);
+  //   console.log('----------------------------------------------------');
+  //   let articles = [...originalArticles];
+  //   console.log(articles);
+  //   console.log('----------------------------------------------------');
+  //   shuffleArray(articles);
+  //   console.log(articles);
+  //   const arr = [];
+  //   const res = await axios.get('https://www.espn.com/nba/');
+  //   const html = res.data;
+  //   const $ = cheerio.load(html);
+  //   $('.headlineStack__header + section > ul > li > a', html).each(function () {
+  //     console.log($(this));
+  //     console.log($(this).text());
+  //     console.log($(this).attr('href'));
+  //     const resUrl = $(this).attr('href');
+  //     const url = website.base + resUrl;
+  //     let title = '';
+  //     if (website.name === 'nba') {
+  //       title = getTitle(resUrl);
+  //     } else if (website.name === 'espn') {
+  //       title = $(this).text();
+  //     }
+  //     arr.push({ title, url, source: website.name });
+  //   });
+  //   if (request.query && request.query.limit) {
+  //     const query = request.query;
+  //     response.json(arr.slice(0, 2));
+  //   }
+  //   response.json(arr);
 });
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
