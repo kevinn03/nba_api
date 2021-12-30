@@ -26,9 +26,9 @@ const websites = [
   },
   {
     name: 'slam',
-    address: 'https://www.slamonline.com/news/',
+    address: 'https://www.slamonline.com/',
     base: '',
-    selector: '.blog-post-vert-content h3 a',
+    selector: '.h-bloglist-block-content-top > h3 > a',
   },
   {
     name: 'yahoo',
@@ -131,37 +131,6 @@ app.get('/news/team/:id', (request, response) => {
   response.json(limitBlogs(request, filterArr));
 });
 
-app.get('/test', async (request, response) => {
-  //   console.log(originalArticles);
-  //   console.log('----------------------------------------------------');
-  //   let articles = [...originalArticles];
-  //   console.log(articles);
-  //   console.log('----------------------------------------------------');
-  //   shuffleArray(articles);
-  //   console.log(articles);
-  //   const arr = [];
-  //   const res = await axios.get('https://www.espn.com/nba/');
-  //   const html = res.data;
-  //   const $ = cheerio.load(html);
-  //   $('.headlineStack__header + section > ul > li > a', html).each(function () {
-  //     console.log($(this));
-  //     console.log($(this).text());
-  //     console.log($(this).attr('href'));
-  //     const resUrl = $(this).attr('href');
-  //     const url = website.base + resUrl;
-  //     let title = '';
-  //     if (website.name === 'nba') {
-  //       title = getTitle(resUrl);
-  //     } else if (website.name === 'espn') {
-  //       title = $(this).text();
-  //     }
-  //     arr.push({ title, url, source: website.name });
-  //   });
-  //   if (request.query && request.query.limit) {
-  //     const query = request.query;
-  //     response.json(arr.slice(0, 2));
-  //   }
-  //   response.json(arr);
-});
+// app.get('/test', async (request, response) => {});
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
