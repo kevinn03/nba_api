@@ -4,7 +4,7 @@
 
 Api server providing endpoints that allow for:
 
-- Getting latest nba news articles from sports sites espn, slam, yahoo, and nba
+- Getting latest nba news articles from sports sites espn, slam, yahoo, bleacher report and nba
 - Getting latest nba news articles by sports sites
 - Getting latest nba news articles by player
 - Getting latest nba news articles by team
@@ -94,9 +94,8 @@ Example /news/team/raptors
 |                                                                      |                                                                                                                              |
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | [axios](https://www.npmjs.com/package/bcrypt)
-| [cheerio] (https://www.npmjs.com/package/cheerio)                    |   Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure                         |
-| [express](https://www.npmjs.com/package/express)                     | Simple, robust web framework for Node                                                                                        |                                                                                              |
-| [nodemon](https://www.npmjs.com/package/nodemon)                     | Performs hot reloading of the application                                                                                    |
+| [cheerio] (https://www.npmjs.com/package/cheerio)                    |Cheerio parses markup and provides an API for                                                                          traversing/manipulating the resulting data structure                        
+| [express](https://www.npmjs.com/package/express)                     | Simple, robust web framework for Node            | [nodemon](https://www.npmjs.com/package/nodemon)                     | Performs hot reloading of the application                                                                                    
 
 ## Author
 
