@@ -76,9 +76,9 @@ Example /news/player/kevin-durant?limit=10
         
         
 
-### GET /news/player/{team}
+### GET /news/team/{team-name}
 
-Returns a list of all the latest nba articles of{team}.
+Returns a list of all the latest nba articles of{team-name}.
 
 
 Optional params:
@@ -86,7 +86,7 @@ limit     returns the maximum number of articles desired
 
 Use dash to seperate names
 Searching by team name produces best results
-Example /news/team/76ers
+Example /news/team/raptors
 
 ## To Do:
 
