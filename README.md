@@ -14,7 +14,7 @@ Api server providing endpoints that allow for:
 
 
 
-```sh
+
 git clone https://github.com/kevinn03/nba_api.git
 
 npm install
@@ -26,10 +26,6 @@ npm install
 ### GET /news
 
 Returns a list of all the latest nba articles.
-
-Optional params:
-limit     returns the maximum number of articles desired
-
 
 
 Optional params:
@@ -69,22 +65,29 @@ Example  /news/espn
 ### GET /news/player/{player name}
 
 Returns a list of all the latest nba articles of{player name}.
-Use dash to seperate names
+
 
 Optional params:
 limit     returns the maximum number of articles desired
 
+Use dash to seperate names
+Searching by players full name seperated by dash produces best results
 Example /news/player/kevin-durant?limit=10
+        
+        
 
 ### GET /news/player/{team}
 
 Returns a list of all the latest nba articles of{team}.
-Use dash to seperate names
+
 
 Optional params:
 limit     returns the maximum number of articles desired
 
-Example /news/team/raptors
+Use dash to seperate names
+Searching by team name produces best results
+Example /news/team/76ers
+
 ## To Do:
 
 - Add query string option for original order of articles
