@@ -34,7 +34,7 @@ example   /news?limit=5
 
 **Successful Response:**
 
-``JSON
+````JSON
 [
 {
 title: "Heat Sign Mario Chalmers",
