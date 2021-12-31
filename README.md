@@ -2,7 +2,7 @@
 
 ## About
 
-Api server providing endpoints that allow for:
+Api  providing endpoints that allow for:
 
 - Getting latest nba news articles from sports sites espn, slam, yahoo, bleacher report and nba
 - Getting latest nba news articles by sports sites
