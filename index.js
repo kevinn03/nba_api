@@ -3,7 +3,7 @@ const app = express();
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 const websites = [
   {
