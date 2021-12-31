@@ -96,7 +96,7 @@ Example /news/team/76ers
 
 |                                                                      |                                                                                                                              |
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| [axios](https://www.npmjs.com/package/bcrypt)
+| [axios](https://www.npmjs.com/package/axios)
 | [cheerio] (https://www.npmjs.com/package/cheerio)                    |Cheerio parses markup and provides an API for                                                                          traversing/manipulating the resulting data structure                        
 | [express](https://www.npmjs.com/package/express)                     | Simple, robust web framework for Node            | [nodemon](https://www.npmjs.com/package/nodemon)                     | Performs hot reloading of the application                                                                                    
 
