@@ -4,10 +4,10 @@
 
 Api  providing endpoints that allow for:
 
-- Getting latest nba news articles from sports sites espn, slam, yahoo, bleacher report and nba
-- Getting latest nba news articles by sports sites
-- Getting latest nba news articles by player
-- Getting latest nba news articles by team
+- Getting latest nba articles from sports sites espn, slam, yahoo, bleacher report and nba
+- Getting latest nba articles by sports sites
+- Getting latest nba articles by player
+- Getting latest nba articles by team
 
 
 ## Install
