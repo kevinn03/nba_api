@@ -106,7 +106,7 @@ app.get('/news/:site', (request, response) => {
   const site = request.params.site;
 
   const filterArr = retArticles.filter(
-    (ele) => ele.source.toLowerCase() === site.toLowerCase()
+    (ele) => ele.source.toLowerCase() === site.toLowerCase() && ele.title !== ''
   );
 
   response.json(limitBlogs(request, filterArr));
@@ -117,7 +117,8 @@ app.get('/news/player/:id', (request, response) => {
   const id = request.params.id;
 
   const filterArr = retArticles.filter(
-    (ele) => ele.title.includes(id) || ele.url.includes(id)
+    (ele) =>
+      (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
   );
 
   response.json(limitBlogs(request, filterArr));
@@ -128,7 +129,9 @@ app.get('/news/team/:id', (request, response) => {
   const id = request.params.id;
 
   const filterArr = retArticles.filter(
-    (ele) => ele.title.toLowerCase().includes(id) || ele.url.includes(id)
+    (ele) =>
+      (ele.title.toLowerCase().includes(id) || ele.url.includes(id)) &&
+      ele.title !== ''
   );
 
   response.json(limitBlogs(request, filterArr));
