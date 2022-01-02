@@ -21,7 +21,7 @@ newsRouter.get('/', async (request, response) => {
   }
 });
 
-newsRouter.get('/:site', async (request, response) => {
+newsRouter.get('/source/:site', async (request, response) => {
   try {
     const site = request.params.site;
     const website = websites.find((web) => web.name === site.toLowerCase());

@@ -2,39 +2,32 @@
 
 ## About
 
-Api  providing endpoints that allow for:
+Api providing endpoints that allow for:
 
 - Getting latest nba articles from sports sites espn, slam, yahoo, bleacher report and nba
 - Getting latest nba articles by sports sites
 - Getting latest nba articles by player
 - Getting latest nba articles by team
 
-
 ## Install
-
-
-
 
 git clone https://github.com/kevinn03/nba_api.git
 
 npm install
 
-
 ## Endpoint Documentation
-
 
 ### GET /news
 
 Returns a list of all the latest nba articles.
 
-
 Optional params:
-limit     returns the maximum number of articles desired
-example   /news?limit=5
+limit returns the maximum number of articles desired
+example /news?limit=5
 
 **Successful Response:**
 
-````JSON
+```JSON
 [
 {
 title: "Heat Sign Mario Chalmers",
@@ -52,37 +45,34 @@ url: "https://ca.nba.com/news/raptors-76ers-game-preview-channel-postponement-ne
 source: "nba"
 },
 ]
-````
-### GET /news/{sportsite}
+```
+
+### GET /news/source/{sportsite}
 
 Returns a list of all the latest nba articles from the {sportsite}.
 
 Optional params:
-limit     returns the maximum number of articles desired
+limit returns the maximum number of articles desired
 
-Example  /news/espn 
+Example /news/source/espn
 
 ### GET /news/player/{player name}
 
 Returns a list of all the latest nba articles of{player name}.
 
-
 Optional params:
-limit     returns the maximum number of articles desired
+limit returns the maximum number of articles desired
 
 Use dash to seperate names
 Searching by players full name seperated by dash produces best results
 Example /news/player/kevin-durant?limit=10
-        
-        
 
 ### GET /news/team/{team-name}
 
 Returns a list of all the latest nba articles of{team-name}.
 
-
 Optional params:
-limit     returns the maximum number of articles desired
+limit returns the maximum number of articles desired
 
 Use dash to seperate names
 Searching by team name produces best results
@@ -94,19 +84,17 @@ Example /news/team/raptors
 
 ## Dependencies
 
-
 [axios] (https://www.npmjs.com/package/axios)
 
 [cheerio] (https://www.npmjs.com/package/cheerio)
-Cheerio parses markup and provides an API for                                                                       traversing/manipulating the resulting data structure                        
+Cheerio parses markup and provides an API for traversing/manipulating the resulting data structure
 
-[express] (https://www.npmjs.com/package/express)                     
-Simple, robust web framework for Node            
+[express] (https://www.npmjs.com/package/express)  
+Simple, robust web framework for Node
 
-[nodemon] (https://www.npmjs.com/package/nodemon)                     
-Performs hot reloading of the application                                                                                    
+[nodemon] (https://www.npmjs.com/package/nodemon)  
+Performs hot reloading of the application
 
 ## Author
 
 👤 **Kevin Nguyen**
-
