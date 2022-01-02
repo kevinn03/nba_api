@@ -140,14 +140,18 @@ app.get('/news/player/:id', async (request, response) => {
   response.json(limitBlogs(request, filterArr));
 });
 
-app.get('/news/team/:id', (request, response) => {
-  const retArticles = [...articles];
+app.get('/news/team/:id', async (request, response) => {
   const id = request.params.id;
+
+  let retArticles = [];
+  for (const website of websites) {
+    const data = await getData(website);
+    retArticles = [...retArticles, ...data];
+  }
 
   const filterArr = retArticles.filter(
     (ele) =>
-      (ele.title.toLowerCase().includes(id) || ele.url.includes(id)) &&
-      ele.title !== ''
+      (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
   );
 
   response.json(limitBlogs(request, filterArr));
