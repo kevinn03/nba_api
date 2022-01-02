@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const cheerio = require('cheerio');
+const { response } = require('express');
 
 const PORT = process.env.PORT || 8000;
 
@@ -50,11 +51,20 @@ const shuffleArray = (array) => {
   }
 };
 
-const originalArticles = [];
-let articles = [];
+const limitBlogs = (request, articles) => {
+  const retArticles = [...articles];
+  if (request.query && request.query.limit) {
+    if (request.query.limit < 0) {
+      request.query.limit = 0;
+    }
+    return retArticles.slice(0, request.query.limit);
+  }
+  return retArticles;
+};
 
-const loadArticle = async () => {
-  for (const website of websites) {
+const getData = async (website) => {
+  try {
+    const originalArticles = [];
     const res = await axios.get(website.address);
     const html = res.data;
     const $ = cheerio.load(html);
@@ -76,40 +86,41 @@ const loadArticle = async () => {
       }
       originalArticles.push({ title, url, source: website.name });
     });
+    return originalArticles;
+  } catch (err) {
+    return err.messaage;
   }
-  articles = [...originalArticles];
-  shuffleArray(articles);
 };
 
-loadArticle();
-
-const limitBlogs = (request, articles) => {
-  const retArticles = [...articles];
-  if (request.query && request.query.limit) {
-    if (request.query.limit < 0) {
-      request.query.limit = 0;
-    }
-    return retArticles.slice(0, request.query.limit);
-  }
-  return retArticles;
-};
 app.get('/', (request, response) => {
   response.json('NBA');
 });
 
-app.get('/news', (request, response) => {
-  response.json(limitBlogs(request, articles));
+app.get('/news', async (request, response) => {
+  try {
+    let articles = [];
+    for (const website of websites) {
+      const data = await getData(website);
+      articles = [...articles, ...data];
+    }
+    shuffleArray(articles);
+    response.json(articles);
+  } catch (err) {
+    response.json({ error: err.messaage });
+  }
 });
 
-app.get('/news/:site', (request, response) => {
-  const retArticles = [...articles];
-  const site = request.params.site;
+app.get('/news/:site', async (request, response) => {
+  try {
+    const site = request.params.site;
+    const website = websites.find((web) => web.name === site.toLowerCase());
 
-  const filterArr = retArticles.filter(
-    (ele) => ele.source.toLowerCase() === site.toLowerCase() && ele.title !== ''
-  );
+    const retArticles = await getData(website);
 
-  response.json(limitBlogs(request, filterArr));
+    response.json(limitBlogs(request, retArticles));
+  } catch (err) {
+    response.json({ error: err.messaage });
+  }
 });
 
 app.get('/news/player/:id', (request, response) => {
