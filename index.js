@@ -123,9 +123,14 @@ app.get('/news/:site', async (request, response) => {
   }
 });
 
-app.get('/news/player/:id', (request, response) => {
-  const retArticles = [...articles];
+app.get('/news/player/:id', async (request, response) => {
   const id = request.params.id;
+
+  let retArticles = [];
+  for (const website of websites) {
+    const data = await getData(website);
+    retArticles = [...retArticles, ...data];
+  }
 
   const filterArr = retArticles.filter(
     (ele) =>
