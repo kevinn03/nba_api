@@ -15,7 +15,7 @@ newsRouter.get('/', async (request, response) => {
     }
     articles = articles.filter((ele) => ele.title !== '');
     shuffleArray(articles);
-    response.json(articles);
+    response.json(limitBlogs(request, articles));
   } catch (err) {
     response.json({ error: err.messaage });
   }
