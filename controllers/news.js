@@ -13,6 +13,7 @@ newsRouter.get('/', async (request, response) => {
       const data = await getData(website);
       articles = [...articles, ...data];
     }
+    articles = articles.filter((ele) => ele.title !== '');
     shuffleArray(articles);
     response.json(articles);
   } catch (err) {
