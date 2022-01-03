@@ -8,14 +8,14 @@ const {
 
 newsRouter.get('/', async (request, response) => {
   try {
-    let articles = [];
+    const articles = [];
     for (const website of websites) {
       const data = await getData(website);
-      articles = [...articles, ...data];
+      articles.push(...data);
     }
-    articles = articles.filter((ele) => ele.title !== '');
-    shuffleArray(articles);
-    response.json(limitBlogs(request, articles));
+    const retArticles = articles.filter((ele) => ele.title !== '');
+    shuffleArray(retArticles);
+    response.json(limitBlogs(request, retArticles));
   } catch (err) {
     response.json({ error: err.messaage });
   }
@@ -38,10 +38,10 @@ newsRouter.get('/source/:site', async (request, response) => {
 newsRouter.get('/player/:id', async (request, response) => {
   const id = request.params.id;
 
-  let retArticles = [];
+  const retArticles = [];
   for (const website of websites) {
     const data = await getData(website);
-    retArticles = [...retArticles, ...data];
+    retArticles.push(...data);
   }
 
   const filterArr = retArticles.filter(
@@ -55,10 +55,10 @@ newsRouter.get('/player/:id', async (request, response) => {
 newsRouter.get('/team/:id', async (request, response) => {
   const id = request.params.id;
 
-  let retArticles = [];
+  const retArticles = [];
   for (const website of websites) {
     const data = await getData(website);
-    retArticles = [...retArticles, ...data];
+    retArticles.push(...data);
   }
 
   const filterArr = retArticles.filter(
