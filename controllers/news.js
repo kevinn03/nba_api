@@ -29,13 +29,17 @@ newsRouter.get('/source/:site', async (request, response) => {
   try {
     const site = request.params.site;
     let retArticles;
+    let filterArr;
     if (mainArticle.length === 0) {
       const website = websites.find((web) => web.name === site.toLowerCase());
       retArticles = await getData(website);
+      filterArr = retArticles.filter((ele) => ele.title !== '');
     } else {
       retArticles = mainArticle;
+      filterArr = retArticles.filter(
+        (ele) => ele.title !== '' && ele.source === site.toLowerCase()
+      );
     }
-    const filterArr = retArticles.filter((ele) => ele.title !== '');
 
     response.json(limitBlogs(request, filterArr));
   } catch (err) {
