@@ -86,4 +86,12 @@ const getData = async (website) => {
   }
 };
 
-module.exports = { websites, shuffleArray, limitBlogs, getData };
+const getArticles = async () => {
+  const articles = [];
+  for (const website of websites) {
+    const data = await getData(website);
+    articles.push(...data);
+  }
+  return articles;
+};
+module.exports = { websites, shuffleArray, limitBlogs, getData, getArticles };
