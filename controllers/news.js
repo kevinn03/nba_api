@@ -4,15 +4,19 @@ const {
   shuffleArray,
   limitBlogs,
   getData,
+  getArticles,
 } = require('../utils/news_helper');
+
+let mainArticle = [];
 
 newsRouter.get('/', async (request, response) => {
   try {
-    const articles = [];
-    for (const website of websites) {
-      const data = await getData(website);
-      articles.push(...data);
+    if (mainArticle.length === 0) {
+      mainArticle = await getArticles();
     }
+
+    const articles = mainArticle;
+
     const retArticles = articles.filter((ele) => ele.title !== '');
     shuffleArray(retArticles);
     response.json(limitBlogs(request, retArticles));
