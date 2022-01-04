@@ -32,10 +32,8 @@ newsRouter.get('/source/:site', async (request, response) => {
     if (mainArticle.length === 0) {
       const website = websites.find((web) => web.name === site.toLowerCase());
       retArticles = await getData(website);
-      console.log('used scrape');
     } else {
       retArticles = mainArticle;
-      console.log('used mainArticle');
     }
     const filterArr = retArticles.filter((ele) => ele.title !== '');
 
@@ -46,37 +44,41 @@ newsRouter.get('/source/:site', async (request, response) => {
 });
 
 newsRouter.get('/player/:id', async (request, response) => {
-  const id = request.params.id;
+  try {
+    const id = request.params.id;
+    if (mainArticle.length === 0) {
+      mainArticle = await getArticles();
+    }
+    const articles = mainArticle;
 
-  const retArticles = [];
-  for (const website of websites) {
-    const data = await getData(website);
-    retArticles.push(...data);
+    const filterArr = articles.filter(
+      (ele) =>
+        (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
+    );
+
+    response.json(limitBlogs(request, filterArr));
+  } catch (err) {
+    response.json({ error: err.messaage });
   }
-
-  const filterArr = retArticles.filter(
-    (ele) =>
-      (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
-  );
-
-  response.json(limitBlogs(request, filterArr));
 });
 
 newsRouter.get('/team/:id', async (request, response) => {
-  const id = request.params.id;
+  try {
+    const id = request.params.id;
+    if (mainArticle.length === 0) {
+      mainArticle = await getArticles();
+    }
+    const articles = mainArticle;
 
-  const retArticles = [];
-  for (const website of websites) {
-    const data = await getData(website);
-    retArticles.push(...data);
+    const filterArr = articles.filter(
+      (ele) =>
+        (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
+    );
+
+    response.json(limitBlogs(request, filterArr));
+  } catch (err) {
+    response.json({ error: err.messaage });
   }
-
-  const filterArr = retArticles.filter(
-    (ele) =>
-      (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
-  );
-
-  response.json(limitBlogs(request, filterArr));
 });
 
 module.exports = newsRouter;
