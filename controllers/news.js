@@ -28,9 +28,15 @@ newsRouter.get('/', async (request, response) => {
 newsRouter.get('/source/:site', async (request, response) => {
   try {
     const site = request.params.site;
-    const website = websites.find((web) => web.name === site.toLowerCase());
-
-    const retArticles = await getData(website);
+    let retArticles;
+    if (mainArticle.length === 0) {
+      const website = websites.find((web) => web.name === site.toLowerCase());
+      retArticles = await getData(website);
+      console.log('used scrape');
+    } else {
+      retArticles = mainArticle;
+      console.log('used mainArticle');
+    }
     const filterArr = retArticles.filter((ele) => ele.title !== '');
 
     response.json(limitBlogs(request, filterArr));
