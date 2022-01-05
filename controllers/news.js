@@ -9,11 +9,17 @@ const {
 const cron = require('node-cron');
 
 let mainArticle = [];
+let counter = 0;
 cron.schedule('*/10 * * * * *', async function () {
+  counter++;
   // mainArticle = await getArticles();
   console.log('running a task every 10 second');
   console.log('---------------------------');
   // console.log(mainArticle);
+});
+
+newsRouter.get('/test', (request, response) => {
+  response.send(counter);
 });
 
 newsRouter.get('/', async (request, response) => {
