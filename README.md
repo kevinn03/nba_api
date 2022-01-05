@@ -15,6 +15,10 @@ git clone https://github.com/kevinn03/nba_api.git
 
 npm install
 
+npm run dev
+
+localhost:8000
+
 ## Endpoint Documentation
 
 ### GET /news
