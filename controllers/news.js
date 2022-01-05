@@ -19,7 +19,7 @@ cron.schedule('*/10 * * * * *', async function () {
 });
 
 newsRouter.get('/test', (request, response) => {
-  response.send(counter);
+  response.send('counter');
 });
 
 newsRouter.get('/', async (request, response) => {
