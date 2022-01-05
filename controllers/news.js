@@ -15,10 +15,6 @@ cron.schedule('*/15 * * * *', async function () {
   console.log('after 15 min');
 });
 
-newsRouter.get('/test', (request, response) => {
-  response.send(`${counter}`);
-});
-
 newsRouter.get('/', async (request, response) => {
   try {
     if (mainArticle.length === 0) {
