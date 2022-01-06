@@ -2,6 +2,8 @@
 
 ## About
 
+https://nba-stories.herokuapp.com/
+
 Api providing endpoints that allow for:
 
 - Getting latest nba articles from sports sites espn, slam, yahoo, bleacher report and nba
