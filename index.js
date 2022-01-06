@@ -13,9 +13,9 @@ app.get('', async (request, response) =>
 <h2>Endpoints</h2> 
 
 <h3>/news/</h3>
-<p>Returns a list of all the latest nba articles from the {sportsite}.</p>
+<p>Returns a list of all the latest nba articles from sports sites espn, slam, yahoo, bleacher report and nba</p>
 <p>Optional params: limit returns the maximum number of articles desired</p>
-<p>Example /news/source/espn?limit=5</p>
+<p>Example /news?limit=5</p>
 
 <h3>/news/source/{sportsite}</h3>
 <div>
