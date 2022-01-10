@@ -104,4 +104,12 @@ const getArticles = async () => {
   articles.push(...nbaData);
   return articles;
 };
-module.exports = { websites, shuffleArray, limitBlogs, getData, getArticles };
+module.exports = {
+  nbaWebsite,
+  websites,
+  shuffleArray,
+  limitBlogs,
+  getData,
+  getArticles,
+  getNbaData,
+};
