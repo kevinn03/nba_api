@@ -1,8 +1,11 @@
 const newsRouter = require('express').Router();
+
 const {
+  nbaWebsite,
   websites,
   shuffleArray,
   limitBlogs,
+  getNbaData,
   getData,
   getArticles,
 } = require('../utils/news_helper');
@@ -23,9 +26,8 @@ newsRouter.get('/', async (request, response) => {
 
     const articles = mainArticle;
 
-    const retArticles = articles.filter((ele) => ele.title !== '');
-    shuffleArray(retArticles);
-    response.json(limitBlogs(request, retArticles));
+    shuffleArray(articles);
+    response.json(limitBlogs(request, articles));
   } catch (err) {
     response.json({ error: err.messaage });
   }
@@ -37,17 +39,20 @@ newsRouter.get('/source/:site', async (request, response) => {
     let retArticles;
     let filterArr;
     if (mainArticle.length === 0) {
-      const website = websites.find((web) => web.name === site.toLowerCase());
-      retArticles = await getData(website);
-      filterArr = retArticles.filter((ele) => ele.title !== '');
+      if (site.toLowerCase() === 'nba') {
+        retArticles = await getNbaData(nbaWebsite);
+      } else {
+        const website = websites.find((web) => web.name === site.toLowerCase());
+        retArticles = await getData(website);
+      }
+      response.json(limitBlogs(request, retArticles));
     } else {
       retArticles = mainArticle;
       filterArr = retArticles.filter(
-        (ele) => ele.title !== '' && ele.source === site.toLowerCase()
+        (article) => article.source === site.toLowerCase()
       );
+      response.json(limitBlogs(request, filterArr));
     }
-
-    response.json(limitBlogs(request, filterArr));
   } catch (err) {
     response.json({ error: err.messaage });
   }
@@ -62,8 +67,7 @@ newsRouter.get('/player/:id', async (request, response) => {
     const articles = mainArticle;
 
     const filterArr = articles.filter(
-      (ele) =>
-        (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
+      (article) => article.title.includes(id) || article.url.includes(id)
     );
 
     response.json(limitBlogs(request, filterArr));
@@ -81,8 +85,7 @@ newsRouter.get('/team/:id', async (request, response) => {
     const articles = mainArticle;
 
     const filterArr = articles.filter(
-      (ele) =>
-        (ele.title.includes(id) || ele.url.includes(id)) && ele.title !== ''
+      (article) => article.title.includes(id) || article.url.includes(id)
     );
 
     response.json(limitBlogs(request, filterArr));
