@@ -86,7 +86,7 @@ Example /news/team/raptors
 
 ## To Do:
 
-- Add query string option for original order of articles
+- 
 
 ## Dependencies
 
