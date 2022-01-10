@@ -14,6 +14,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
+    "cors": "^2.8.5",
     "express": "^4.17.2",
     "node-cron": "^3.0.0",
     "nodemon": "^2.0.15"

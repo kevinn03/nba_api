@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const middleware = require('./utils/middleware');
 const newsRouter = require('./controllers/news');
 const PORT = process.env.PORT || 8000;
-
+app.use(cors());
 app.get('', async (request, response) =>
   response.send(`<h1>NBA-Latest Stories-API</h1>
 <h2>About</h2>
