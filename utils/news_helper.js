@@ -2,12 +2,6 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const websites = [
   {
-    name: 'nba',
-    address: 'https://ca.nba.com/news',
-    base: '',
-    selector: 'article a',
-  },
-  {
     name: 'espn',
     address: 'https://www.espn.com/nba/',
     base: 'https://www.espn.com',
@@ -33,9 +27,12 @@ const websites = [
   },
 ];
 
-const getTitle = (strTitle, digit) => {
-  let retTitle = strTitle.split('/');
-  return retTitle[digit];
+const nbaWebsite = {
+  name: 'nba',
+  address: 'https://ca.nba.com/news',
+  base: '',
+  selectorUrl: 'article a',
+  selectorTitle: '.card__headline',
 };
 
 const shuffleArray = (array) => {
@@ -66,24 +63,35 @@ const getData = async (website) => {
     $(website.selector, html).each(function () {
       const resUrl = $(this).attr('href');
       const url = website.base + resUrl;
-      let title = '';
-      if (website.name === 'nba') {
-        title = getTitle(resUrl, 4);
-      } else if (website.name === 'espn') {
-        title = $(this).text();
-      } else if (website.name === 'bleacherreport') {
-        title = $(this).text();
-      } else if (website.name === 'slam') {
-        title = $(this).text();
-      } else if (website.name === 'yahoo') {
-        title = $(this).text();
-      }
+      let title = $(this).text();
+
       originalArticles.push({ title, url, source: website.name });
     });
-    return originalArticles;
+    return originalArticles.filter((article) => article.title !== '');
   } catch (err) {
     return err.messaage;
   }
+};
+
+const getNbaData = async (website) => {
+  const res = await axios.get(website.address);
+  const html = res.data;
+  const $ = cheerio.load(html);
+  const nbaTitle = [];
+  const nbaUrl = [];
+  const nbaArticles = [];
+  $(website.selectorTitle, html).each(function () {
+    nbaTitle.push($(this).text().trim());
+  });
+
+  $(website.selectorUrl, html).each(function () {
+    nbaUrl.push($(this).attr('href'));
+  });
+  for (let i = 0; i < nbaTitle.length; i++) {
+    const article = { title: nbaTitle[i], url: nbaUrl[i], source: 'nba' };
+    nbaArticles.push(article);
+  }
+  return nbaArticles;
 };
 
 const getArticles = async () => {
@@ -92,6 +100,8 @@ const getArticles = async () => {
     const data = await getData(website);
     articles.push(...data);
   }
+  const nbaData = await getNbaData(nbaWebsite);
+  articles.push(...nbaData);
   return articles;
 };
 module.exports = { websites, shuffleArray, limitBlogs, getData, getArticles };
