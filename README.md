@@ -60,6 +60,8 @@ Returns a list of all the latest nba articles from the {sportsite}.
 Optional params:
 limit returns the maximum number of articles desired
 
+Options: nba, nba_canada, bleacher_report, espn, yahoo, slam
+
 Example /news/source/espn
 
 ### GET /news/player/{player name}
