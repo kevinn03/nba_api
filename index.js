@@ -22,6 +22,7 @@ app.get('', async (request, response) =>
 <div>
 <p>Returns a list of all the latest nba articles from the {sportsite}.</p>
 <p>Optional params: limit returns the maximum number of articles desired</p>
+<p>Options: nba, nba_canada, bleacher_report, espn, yahoo, slam</p>
 <p>Example /news/source/espn?limit=5</p>
 
 <h3>/news/player/{player name}</h3>
