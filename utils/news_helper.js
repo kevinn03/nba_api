@@ -35,10 +35,10 @@ const websites = [
 
 const nbaCanWebsite = {
   name: 'nba_canada',
-  address: 'https://ca.nba.com/news',
-  base: '',
-  selectorUrl: 'article a',
-  selectorTitle: '.card__headline',
+  address: 'https://www.sportingnews.com/ca/nba/news',
+  base: 'https://www.sportingnews.com',
+  selectorUrl: '.list-item__title > a',
+  selectorTitle: '.list-item__title > a > span',
 };
 
 const shuffleArray = (array) => {
@@ -107,11 +107,12 @@ const getCanNbaData = async (website) => {
   for (let i = 0; i < nbaTitle.length; i++) {
     const article = {
       title: nbaTitle[i],
-      url: nbaUrl[i],
+      url: website.base + nbaUrl[i],
       source: website.name,
     };
     nbaArticles.push(article);
   }
+
   return nbaArticles;
 };
 
