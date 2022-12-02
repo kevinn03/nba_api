@@ -38,7 +38,7 @@ const nbaCanWebsite = {
   address: 'https://www.sportingnews.com/ca/nba/news',
   base: 'https://www.sportingnews.com',
   selectorUrl: '.list-item__title > a',
-  selectorTitle: '.list-item__title > a > span',
+  selectorTitle: '.list-item__title > a',
 };
 
 const shuffleArray = (array) => {
