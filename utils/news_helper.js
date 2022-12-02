@@ -33,22 +33,23 @@ const websites = [
   },
 ];
 
-const nbaWebsite = {
-  name: 'nba',
-  address: 'https://www.nba.com/news/category/top-stories',
-  base: 'https://www.nba.com',
-  selectorUrl: '.ArticleTile_tileMainContent__c_bU1 > a',
-  selectorTitle:
-    '.ArticleTile_tileMainContent__c_bU1 > a > header > h3 > span ',
-};
-
-const nbaCanWebsite = {
-  name: 'nba_canada',
-  address: 'https://www.sportingnews.com/ca/nba/news',
-  base: 'https://www.sportingnews.com',
-  selectorUrl: '.list-item__title > a',
-  selectorTitle: '.list-item__title > a',
-};
+const nbaWebsites = [
+  {
+    name: 'nba',
+    address: 'https://www.nba.com/news/category/top-stories',
+    base: 'https://www.nba.com',
+    selectorUrl: '.ArticleTile_tileMainContent__c_bU1 > a',
+    selectorTitle:
+      '.ArticleTile_tileMainContent__c_bU1 > a > header > h3 > span ',
+  },
+  {
+    name: 'nba_canada',
+    address: 'https://www.sportingnews.com/ca/nba/news',
+    base: 'https://www.sportingnews.com',
+    selectorUrl: '.list-item__title > a',
+    selectorTitle: '.list-item__title > a',
+  },
+];
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -125,49 +126,27 @@ const getNbaData = async (website) => {
   return nbaArticles;
 };
 
-const getCanNbaData = async (website) => {
-  const res = await axios.get(website.address);
-  const html = res.data;
-  const $ = cheerio.load(html);
-  const nbaTitle = [];
-  const nbaUrl = [];
-  const nbaArticles = [];
-  $(website.selectorTitle, html).each(function () {
-    nbaTitle.push($(this).text().trim());
-  });
-
-  $(website.selectorUrl, html).each(function () {
-    nbaUrl.push($(this).attr('href'));
-  });
-  for (let i = 0; i < nbaTitle.length; i++) {
-    const article = {
-      title: nbaTitle[i],
-      url: website.base + nbaUrl[i],
-      source: website.name,
-    };
-    nbaArticles.push(article);
-  }
-
-  return nbaArticles;
-};
-
 const getArticles = async () => {
   const articles = [];
   for (const website of websites) {
     const data = await getData(website);
     articles.push(...data);
   }
-  const nbaCanData = await getCanNbaData(nbaCanWebsite);
-  const nbaData = await getCanNbaData(nbaWebsite);
-  articles.push(...nbaData, ...nbaCanData);
+
+  for (const website of nbaWebsites) {
+    const data = await getNbaData(website);
+    articles.push(...data);
+  }
+
   return articles;
 };
 module.exports = {
-  nbaCanWebsite,
+  nbaWebsites,
   websites,
   shuffleArray,
   limitBlogs,
   getData,
+  getNbaData,
   getArticles,
-  getCanNbaData,
+  getNbaData,
 };
