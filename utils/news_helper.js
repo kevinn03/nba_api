@@ -33,6 +33,15 @@ const websites = [
   },
 ];
 
+const nbaWebsite = {
+  name: 'nba',
+  address: 'https://www.nba.com/news/category/top-stories',
+  base: 'https://www.nba.com',
+  selectorUrl: '.ArticleTile_tileMainContent__c_bU1 > a',
+  selectorTitle:
+    '.ArticleTile_tileMainContent__c_bU1 > a > header > h3 > span ',
+};
+
 const nbaCanWebsite = {
   name: 'nba_canada',
   address: 'https://www.sportingnews.com/ca/nba/news',
@@ -90,6 +99,32 @@ const getData = async (website) => {
   }
 };
 
+const getNbaData = async (website) => {
+  const res = await axios.get(website.address);
+  const html = res.data;
+  const $ = cheerio.load(html);
+  const nbaTitle = [];
+  const nbaUrl = [];
+  const nbaArticles = [];
+  $(website.selectorTitle, html).each(function () {
+    nbaTitle.push($(this).text().trim());
+  });
+
+  $(website.selectorUrl, html).each(function () {
+    nbaUrl.push($(this).attr('href'));
+  });
+  for (let i = 0; i < nbaTitle.length; i++) {
+    const article = {
+      title: nbaTitle[i],
+      url: website.base + nbaUrl[i],
+      source: website.name,
+    };
+    nbaArticles.push(article);
+  }
+
+  return nbaArticles;
+};
+
 const getCanNbaData = async (website) => {
   const res = await axios.get(website.address);
   const html = res.data;
@@ -122,8 +157,9 @@ const getArticles = async () => {
     const data = await getData(website);
     articles.push(...data);
   }
-  const nbaData = await getCanNbaData(nbaCanWebsite);
-  articles.push(...nbaData);
+  const nbaCanData = await getCanNbaData(nbaCanWebsite);
+  const nbaData = await getCanNbaData(nbaWebsite);
+  articles.push(...nbaData, ...nbaCanData);
   return articles;
 };
 module.exports = {
