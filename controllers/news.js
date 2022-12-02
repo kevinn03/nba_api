@@ -1,13 +1,13 @@
 const newsRouter = require('express').Router();
 
 const {
-  nbaCanWebsite,
   websites,
   shuffleArray,
   limitBlogs,
-  getCanNbaData,
   getData,
   getArticles,
+  getNbaData,
+  nbaWebsites,
 } = require('../utils/news_helper');
 const cron = require('node-cron');
 
@@ -40,7 +40,9 @@ newsRouter.get('/source/:site', async (request, response) => {
     let filterArr;
     if (mainArticle.length === 0) {
       if (site.toLowerCase() === 'nba_canada') {
-        retArticles = await getCanNbaData(nbaCanWebsite);
+        retArticles = await getNbaData(nbaWebsites[1]);
+      } else if (site.toLowerCase() === 'nba') {
+        retArticles = await getNbaData(nbaWebsites[0]);
       } else {
         const website = websites.find((web) => web.name === site.toLowerCase());
         retArticles = await getData(website);
