@@ -2,7 +2,7 @@
 
 ## About
 
-https://nba-stories.herokuapp.com/
+https://nba-stories.onrender.com/
 
 Api providing endpoints that allow for:
 
