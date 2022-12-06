@@ -13,27 +13,42 @@ app.get('', async (request, response) =>
 
 <h2>Endpoints</h2> 
 
-<h3>/news/</h3>
+<h3>/articles</h3>
 <p>Returns a list of all the latest nba articles from sports sites espn, slam, yahoo, bleacher report and nba</p>
-<p>Optional params: limit returns the maximum number of articles desired</p>
-<p>Example /news?limit=5</p>
 
-<h3>/news/source/{sportsite}</h3>
 <div>
-<p>Returns a list of all the latest nba articles from the {sportsite}.</p>
-<p>Optional params: limit returns the maximum number of articles desired</p>
-<p>Options: nba, nba_canada, bleacher_report, espn, yahoo, slam</p>
-<p>Example /news/source/espn?limit=5</p>
+<p><em>Optional param</em>: <strong>source</strong> returns articles based on chosen source</p>
+<ul>
+  <li>nba</li>
+  <li>nba-canada</li>
+  <li>espn</li>
+  <li>bleacher-report</li>
+  <li>slam</li>
+  <li>yahoo</li>
+</ul>
+<p> Example /articles?source=bleacher-report</p>
+</div>
 
-<h3>/news/player/{player name}</h3>
-<p>Returns a list of all the latest nba articles of{player name}.</p>
-<p>Optional params: limit returns the maximum number of articles desired</p>
-<p>Use dash to seperate names Searching by players full name seperated by dash produces best results Example /news/player/kevin-durant?limit=10</p>
 
-<h3>/news/team/{team-name}</h3>
-<p>Returns a list of all the latest nba articles of{team}.</p>
-<p>Optional params: limit returns the maximum number of articles desired</p>
-<p>Use dash to seperate names Searching by team name produces best results Example /news/team/raptors</p>
+<div>
+<p><em>Optional param</em>: <strong>limit</strong> returns the maximum number of articles desired
+</br>
+Example /articles?limit=5</p>
+</div>
+
+<div>
+<p><em>Optional param</em>: <strong>player</strong> returns articles based on chosen player
+</br>
+Use names seperated by a hypen for best results
+</br>
+Example /articles?player=kevin-durant&source=espn</p>
+</div>
+
+<div>
+<p><em>Optional param</em>: <strong>team</strong> returns articles base on chosen team
+</br>
+Example /articles?team=lakers</p>
+</div>
 `)
 );
 app.use('/articles', newsRouter);
