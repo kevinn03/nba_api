@@ -51,29 +51,6 @@ const nbaWebsites = [
   },
 ];
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-};
-
-const limitBlogs = (request, articles) => {
-  const retArticles = [...articles];
-  if (request.query && request.query.limit) {
-    if (request.query.limit < 0) {
-      request.query.limit = 0;
-    }
-    return retArticles.slice(0, request.query.limit);
-  }
-  return retArticles;
-};
-
-const getNbaTitle = (title) => {
-  const titleSplit = title.split(' ');
-  const newTitleArr = titleSplit.slice(3);
-  return newTitleArr.join(' ').trim();
-};
 const getData = async (website) => {
   try {
     const originalArticles = [];
@@ -82,15 +59,9 @@ const getData = async (website) => {
     const $ = cheerio.load(html);
 
     $(website.selector, html).each(function () {
-      let title;
+      title = $(this).text().trim();
       const resUrl = $(this).attr('href');
       const url = website.base + resUrl;
-
-      if (website.name === 'nba') {
-        title = getNbaTitle($(this).attr('title'));
-      } else {
-        title = $(this).text();
-      }
 
       originalArticles.push({ title, url, source: website.name });
     });
@@ -101,29 +72,33 @@ const getData = async (website) => {
 };
 
 const getNbaData = async (website) => {
-  const res = await axios.get(website.address);
-  const html = res.data;
-  const $ = cheerio.load(html);
-  const nbaTitle = [];
-  const nbaUrl = [];
-  const nbaArticles = [];
-  $(website.selectorTitle, html).each(function () {
-    nbaTitle.push($(this).text().trim());
-  });
+  try {
+    const res = await axios.get(website.address);
+    const html = res.data;
+    const $ = cheerio.load(html);
+    const nbaTitle = [];
+    const nbaUrl = [];
+    const nbaArticles = [];
+    $(website.selectorTitle, html).each(function () {
+      nbaTitle.push($(this).text().trim());
+    });
 
-  $(website.selectorUrl, html).each(function () {
-    nbaUrl.push($(this).attr('href'));
-  });
-  for (let i = 0; i < nbaTitle.length; i++) {
-    const article = {
-      title: nbaTitle[i],
-      url: website.base + nbaUrl[i],
-      source: website.name,
-    };
-    nbaArticles.push(article);
+    $(website.selectorUrl, html).each(function () {
+      nbaUrl.push($(this).attr('href'));
+    });
+    for (let i = 0; i < nbaTitle.length; i++) {
+      const article = {
+        title: nbaTitle[i],
+        url: website.base + nbaUrl[i],
+        source: website.name,
+      };
+      nbaArticles.push(article);
+    }
+
+    return nbaArticles;
+  } catch (err) {
+    return err.messaage;
   }
-
-  return nbaArticles;
 };
 
 const getArticles = async () => {
@@ -140,13 +115,65 @@ const getArticles = async () => {
 
   return articles;
 };
+
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
+
+const cleanQueryParams = (params) => {
+  const newParams = {};
+  for (const [key, value] of Object.entries(params)) {
+    newParams[key.toLowerCase()] = value;
+  }
+  return newParams;
+};
+
+const limitBlogs = (request, articles) => {
+  const retArticles = [...articles];
+  if (request.query && request.query.limit) {
+    if (request.query.limit < 0) {
+      request.query.limit = 0;
+    }
+    return retArticles.slice(0, request.query.limit);
+  }
+  return retArticles;
+};
+
+const filteredArticles = (request, articles) => {
+  let cleanArticles = articles;
+  if (Object.keys(request.query).length > 0) {
+    const lowerCaseQuery = cleanQueryParams(request.query);
+    let { source, team, player } = lowerCaseQuery;
+
+    if (source) {
+      cleanArticles = articles.filter(
+        (article) => article.source.replace('_', '-') === source
+      );
+    }
+
+    if (team) {
+      cleanArticles = cleanArticles.filter(
+        (article) => article.title.includes(team) || article.url.includes(team)
+      );
+    }
+
+    if (player) {
+      cleanArticles = cleanArticles.filter(
+        (article) =>
+          article.title.includes(player) || article.url.includes(player)
+      );
+    }
+  }
+
+  return cleanArticles;
+};
+
 module.exports = {
-  nbaWebsites,
-  websites,
   shuffleArray,
   limitBlogs,
-  getData,
-  getNbaData,
   getArticles,
-  getNbaData,
+  filteredArticles,
 };

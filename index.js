@@ -36,7 +36,7 @@ app.get('', async (request, response) =>
 <p>Use dash to seperate names Searching by team name produces best results Example /news/team/raptors</p>
 `)
 );
-app.use('/news', newsRouter);
+app.use('/articles', newsRouter);
 app.use(middleware.unknownEndpoint);
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
