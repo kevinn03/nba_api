@@ -23,13 +23,39 @@ localhost:8000
 
 ## Endpoint Documentation
 
-### GET /news
+### GET /articles
 
 Returns a list of all the latest nba articles.
 
 Optional params:
-limit returns the maximum number of articles desired
-example /news?limit=5
+- **source** returns articles based on chose source
+
+    options: nba-canada, nba, bleacher-report, yahoo, espn, slam
+
+    Example /articles?source=bleacher-report
+
+- **team** returns articles based on chosen team
+
+    Example /articles?team=lakers
+
+- **limit** returns the maximum number of articles desired
+  
+    Example /articles?limit=5  
+  
+- **player** returns articles based on chosen player
+  
+    Use dash to seperate names
+    
+    Searching by players full name seperated by dash produces best results
+    
+    Example /articles?player=kevin-durant&limit=10
+ 
+  
+
+
+
+
+
 
 **Successful Response:**
 
@@ -53,38 +79,6 @@ source: "nba"
 ]
 ```
 
-### GET /news/source/{sportsite}
-
-Returns a list of all the latest nba articles from the {sportsite}.
-
-Optional params:
-limit returns the maximum number of articles desired
-
-Options: nba, nba_canada, bleacher_report, espn, yahoo, slam
-
-Example /news/source/espn
-
-### GET /news/player/{player name}
-
-Returns a list of all the latest nba articles of{player name}.
-
-Optional params:
-limit returns the maximum number of articles desired
-
-Use dash to seperate names
-Searching by players full name seperated by dash produces best results
-Example /news/player/kevin-durant?limit=10
-
-### GET /news/team/{team-name}
-
-Returns a list of all the latest nba articles of{team-name}.
-
-Optional params:
-limit returns the maximum number of articles desired
-
-Use dash to seperate names
-Searching by team name produces best results
-Example /news/team/raptors
 
 ## To Do:
 
