@@ -10,12 +10,10 @@ const cron = require('node-cron');
 
 let mainArticle = [];
 
-const http = require('http');
-setInterval(async () => {
-  http.get('https://nba-stories.onrender.com/articles');
+cron.schedule('*/10 * * * *', async function () {
   mainArticle = await getArticles();
   console.log('after 10 min');
-}, 600000);
+});
 
 newsRouter.get('/', async (request, response) => {
   try {
