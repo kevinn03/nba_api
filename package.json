@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "node-cron": "^3.0.0",
+    "node-fetch": "^3.3.0",
     "nodemon": "^2.0.15"
   }
 }
