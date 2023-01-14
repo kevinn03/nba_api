@@ -10,10 +10,10 @@ const cron = require('node-cron');
 
 let mainArticle = [];
 
-cron.schedule('*/10 * * * *', async function () {
+setInterval(async () => {
   mainArticle = await getArticles();
-  console.log('after 10 min');
-});
+  console.log('after 13 min');
+}, 13 * 60000);
 
 newsRouter.get('/', async (request, response) => {
   try {

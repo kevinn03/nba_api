@@ -4,7 +4,9 @@ const cors = require('cors');
 
 const middleware = require('./utils/middleware');
 const newsRouter = require('./controllers/news');
+const wakeUpDyno = require('./utils/dyno');
 const PORT = process.env.PORT || 8000;
+const DYNO_URL = 'https://nba-stories.onrender.com/articles';
 app.use(cors());
 app.get('', async (request, response) =>
   response.send(`<h1>NBA-Latest Stories-API</h1>
@@ -54,4 +56,7 @@ Example /articles?team=lakers</p>
 app.use('/articles', newsRouter);
 app.use(middleware.unknownEndpoint);
 
-app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Listening on port: ${PORT}`);
+  wakeUpDyno(DYNO_URL);
+});
