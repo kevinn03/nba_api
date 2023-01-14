@@ -1,12 +1,11 @@
-const fetch = require('node-fetch');
-
+const axios = require('axios');
 const wakeUpDyno = (url, interval = 14, callback) => {
   const milliseconds = interval * 60000;
   setTimeout(() => {
     try {
       console.log(`setTimeout called.`);
       // HTTP GET request to the dyno's url
-      fetch(url).then(() => console.log(`Fetching ${url}.`));
+      axios.get(url).then(() => console.log(`Fetching ${url}.`));
     } catch (err) {
       // catch fetch errors
       console.log(`Error fetching ${url}: ${err.message} 
